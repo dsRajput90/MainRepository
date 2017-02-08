@@ -1,0 +1,20 @@
+<div class="" ng-app="tabApp">
+  <div class="row" ng-controller="CafeTabController" id="tabs">
+  	<div class="rowMid col-md-12">
+  		<ul class="nav nav-pills">
+       	<li ng-repeat="singleTab in tabs">
+               <a href ng-click="setTab(singleTab)" ng-mouseenter="showIt()" ng-mouseleave="hideIt()">{{singleTab.title}}</a>
+       	</li>
+     	</ul>
+  	</div>
+    <div class="col-md-8">
+  		<div class="jumbotron col-md-offset-3" ng-include="currentTab">
+  	</div>
+  </div>
+  <div class="outerDiv" ng-show="hovering">
+        <p>Some content</p>
+        <div class="innerDiv">
+            <p>More Content</p>
+        </div>
+    </div>
+</div>
