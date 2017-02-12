@@ -10,7 +10,7 @@ public class HelloController {
 
 	@RequestMapping(method = RequestMethod.GET, produces = { "text/plain" })
 	public String index() {
-		return "Greetings from Spring Boot!";
+		return "Greetings from Spring Boot! Welcome!!";
 	}
 	
 }
