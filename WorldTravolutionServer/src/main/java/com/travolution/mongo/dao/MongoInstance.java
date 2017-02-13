@@ -22,17 +22,21 @@ public enum MongoInstance {
 		}
 	}
 	
-	public MongoClient getClient() throws Exception {
+	public MongoClient getClient() {
 		String mongoUrl = PropertyFileReader.getValue("mongodbUrl");
 		String[] mongoUrlArr = mongoUrl.split(":");
 		return new MongoClient(mongoUrlArr[0], Integer.parseInt(mongoUrlArr[1]));
 	}
-	public MongoDatabase getDatabase() throws Exception {
+	public MongoDatabase getDatabase() {
 		if (mongoClient !=null){
 			return mongoClient.getDatabase(PropertyFileReader.getValue("mongoDatabaseName"));
 		} else {
 			mongoClient = getClient();
 			return mongoClient.getDatabase(PropertyFileReader.getValue("mongoDatabaseName"));
 		}
+	}
+	
+	public String getDatabaseName() {
+		return PropertyFileReader.getValue("mongoDatabaseName");
 	}
 }

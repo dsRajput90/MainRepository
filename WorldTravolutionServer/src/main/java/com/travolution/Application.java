@@ -10,9 +10,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.ContextRefreshedEvent;
 
 @SpringBootApplication
+@ComponentScan("com.travolution") 
 public class Application  implements ApplicationListener<ContextRefreshedEvent> {
 	private static final Logger LOG = LoggerFactory.getLogger(Application.class);
 	
