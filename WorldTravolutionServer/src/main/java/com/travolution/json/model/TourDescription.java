@@ -19,9 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Document(collection = "wt_tour_description")
 public class TourDescription {
 	
-	@Id
-    private Long id;
-	
 	@NotNull
 	@JsonProperty("tour_id")
 	private Long tourId;
@@ -41,14 +38,6 @@ public class TourDescription {
 	@NotNull
 	@JsonProperty("updated_on")
 	private Timestamp updatedOn;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public Long getTourId() {
 		return tourId;

@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
@@ -26,9 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TourMedia {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	@Id
-	private Long id;
-	
+
 	@NotNull
 	@JsonProperty("tour_id")
 	private Long tourId;
@@ -60,14 +57,6 @@ public class TourMedia {
 	@NotNull
 	@JsonProperty("updated_on")
 	private Timestamp updatedOn;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public Long getTourId() {
 		return tourId;

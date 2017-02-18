@@ -37,7 +37,7 @@ public class Tour extends MongoImpl{
 	
 	@NotNull
 	@JsonProperty("tour_date")
-	private Timestamp tourDate;
+	private String tourDate;
 	
 	@NotNull
 	@JsonProperty("tour_type")
@@ -46,7 +46,11 @@ public class Tour extends MongoImpl{
 	@NotNull
 	@JsonProperty("tour_price")
 	private Double price;
-
+	
+	@NotNull
+	@JsonProperty("tour_duration")
+	private Integer tourDuration;
+	
 	@NotNull
 	@JsonProperty("tour_total_booking")
 	private Integer totalBooking;
@@ -74,6 +78,15 @@ public class Tour extends MongoImpl{
 	@JsonProperty("updated_on")
 	private Timestamp updatedOn;
 
+	public Integer getTourDuration() {
+		return tourDuration;
+	}
+
+	@JsonProperty("tour_duration")
+	public void setTourDuration(Integer tourDuration) {
+		this.tourDuration = tourDuration;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -92,12 +105,12 @@ public class Tour extends MongoImpl{
 		this.tourName = tourName;
 	}
 
-	public Timestamp getTourDate() {
+	public String getTourDate() {
 		return tourDate;
 	}
 
 	@JsonProperty("tour_date")
-	public void setTourDate(Timestamp tourDate) {
+	public void setTourDate(String tourDate) {
 		this.tourDate = tourDate;
 	}
 
