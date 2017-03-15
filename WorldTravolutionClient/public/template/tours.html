@@ -1,0 +1,12 @@
+<div class="container" ng-controller="TourCtrl" ng-init="init()">
+  <div class="row col-md-4 " id="tabs" ng-repeat="tour in tours">
+  	<div class="col-md-12">
+      <div ng-repeat="media in tour.tour_media">
+  		    <a href="#"><img src="{{media.tour_media_path}}"/></a>
+      </div><br/>
+      <label>{{tour.tour_name}}</label><br/>
+      <label>{{tour.tour_duration}} days</label><br/>
+      <label><b>Price : From </b>{{tour.tour_price}}</label><br/>
+  	</div>
+  </div>
+</div>
