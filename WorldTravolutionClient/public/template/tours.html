@@ -1,0 +1,16 @@
+
+<div class="container" ng-controller="TourCtrl" ng-init="init()">
+  <div class="row col-md-4 " id="tabs" ng-repeat="tour in tours">
+  	<div class="col-md-12">
+      <span class="card" role="button" onclick="event.preventDefault()" data-target="#myModal" ng-click="packageClicked($index)">
+        <div ng-repeat="media in tour.tour_media">
+    		  <a href="#"><img src="{{media.tour_media_path}}"  style="width:100%"/></a>
+        </div>
+      </span><br/>
+      <h4><b>{{tour.tour_name}}</b></h4>
+      <span><b>Duration :</b>{{tour.tour_duration}} days</span><br/>
+      <span><b>Price : From </b>{{tour.tour_price}}</span><br/>
+      <p>Coverage : FORT AGUADA + BEACHES + BOAT CRUISE + MANGESHI TEMPLE + PANJIM SHOPPING </p>
+  	</div>
+  </div>
+</div>

@@ -1,257 +1,128 @@
-var app=angular.module('flapperNews',['ui.router']);
+var app=angular.module('worldTravolution',['ui.router','angularModalService']);
 
 app.config([
 '$stateProvider',
 '$urlRouterProvider',
 function($stateProvider,$urlRouterProvider){
-
 	$stateProvider
-	  .state('login', {
-		url:'/login',
-		templateUrl:'template/login.html',
-		controller:'AuthCtrl',
-		onEnter: ['$state','auth',function($state,auth) {
-			if(auth.isLoggedIn()) {
-				$state.go('home');
-			}
-		}]
-		})
-	  .state('register', {
-		url:'/register',
-		templateUrl:'template/register.html',
-		controller:'AuthCtrl',
-		onEnter:['$state', 'auth', function($state, auth){
-		    if(auth.isLoggedIn()){
-		      $state.go('home');
-		    }
-		  }]
-		})
-	  .state('home', {
-		url: '/home',
-		templateUrl: 'template/home.html',
-		controller: 'CafeTabController'
-		})
-	  .state('posts', {
-		url: '/posts/{id}',
-		templateUrl: 'template/posts.html',
-		controller: 'PostsCtrl',
-		resolve: {
-			post: ['$stateParams','posts', function($stateParams,posts) {
-				return posts.get($stateParams.id);
-			}]
-		}
-		});
-	$urlRouterProvider.otherwise('home');
+		.state('tours', {
+		url:'/tours',
+		templateUrl:'template/tours.html',
+		controller:'TourCtrl'
+	});
+	$urlRouterProvider.otherwise('tours');
 }]);
 
-app.factory('auth', ['$http', '$window', function($http, $window){
+app.factory('tourFactory', ['$http', '$window', function($http, $window){
    var auth = {};
    auth.baseUri = 'http://localhost:9081';
-   auth.saveToken = function (token){
-  $window.localStorage['flapper-news-token'] = token;
-};
-
-auth.getToken = function (){
-  return $window.localStorage['flapper-news-token'];
-}
-
-auth.isLoggedIn = function(){
-  var token = auth.getToken();
-
-  if(token){
-    var payload = JSON.parse($window.atob(token.split('.')[1]));
-
-    return payload.exp > Date.now() / 1000;
-  } else {
-    return false;
-  }
-};
-
-auth.currentUser = function(){
-  if(auth.isLoggedIn()){
-    var token = auth.getToken();
-    var payload = JSON.parse($window.atob(token.split('.')[1]));
-
-    return payload.username;
-  }
-};
-auth.register = function(user){
-  return $http.post('/register', user).success(function(data){
-    auth.saveToken(data.token);
-  });
-};
-
-auth.logIn = function(user){
-  return $http.post('/login', user).success(function(data){
-    auth.saveToken(data.token);
-  });
-};
-
-auth.logOut = function(){
-  $window.localStorage.removeItem('flapper-news-token');
-};
-  return auth;
+   return auth;
 }]);
 
-app.controller('AuthCtrl', [
-'$scope',
-'$state',
-'auth',
-function($scope, $state, auth){
-  $scope.user = {};
-
-  $scope.register = function(){
-    auth.register($scope.user).error(function(error){
-      $scope.error = error;
-    }).then(function(){
-      $state.go('home');
-    });
-  };
-
-  $scope.logIn = function(){
-    auth.logIn($scope.user).error(function(error){
-      $scope.error = error;
-    }).then(function(){
-      $state.go('home');
-    });
-  };
-
-}])
-
-
-app.factory('posts',['$http','auth',function($http,auth){
-	var o = {
-		posts:[]
-	};
- 	o.getAll = function () {
-          return $http.get(auth.baseUri + '/api/post/all').
+app.controller('TourCtrl', [
+'$scope','$http','tourFactory','ModalService',
+function($scope,$http,tourFactory,ModalService){
+		$scope.tours = [];
+		$scope.init = function () {
+          return $http.get(tourFactory.baseUri + '/api/tour/all').
 	    then(function(response) {
-		angular.copy(response.data.data, o.posts);
-	  });
-	};
-	o.create = function(post) {
-		return $http.post('/posts',post, {
-			headers: {Authorization: 'Bearer' + auth.getToken() }
-		}).success(function(data) {
-			o.posts.push(data);
-		});
-	};
-	o.upvote = function(post) {
-	  return $http.put('/posts/' + post._id + '/upvote', null, {
-	    headers: {Authorization: 'Bearer '+auth.getToken()}
-	  }).success(function(data){
-	    post.upvotes += 1;
+					angular.copy(response.data.data, $scope.tours);
+					console.log($scope.tours);
 	  });
 	};
 
-	o.get = function(id) {
-	  return $http.get('/posts/' + id).then(function(res){
-	    return res.data;
-	  });
-	};
-	o.addComment = function(id,comment) {
-		return $http.post('/posts/'+id + '/comments' , comment,
-			{headers: {Authorization:'Bearer' +auth.getToken()}
-		});
-	};
-	o.upvoteComment = function(post, comment) {
-	  return $http.put('/posts/' + post._id + '/comments/'+ comment._id + '/upvote', null, {
-		    headers: {Authorization: 'Bearer '+auth.getToken()}
-		})
-	    .success(function(data){
-	      comment.upvotes += 1;
-	    });
-	};
+	$scope.show = function(scope) {
+				ModalService.showModal({
+						templateUrl: 'template/modal.html',
+						controller: "ModalController",
+						animation: "false",
+						resolve: {
+							test: function(){
+								return 'test variable';
+							}
+						},
+						inputs:{
+						scope:scope
+						}
+				}).then(function(modal) {
 
-	return o;
-}]);
+						modal.element.modal();
+						modal.close.then(function(result) {
+							 // $scope.message = "You said " + result;
+						});
+				});
+		};
 
-app.controller('NavCtrl', [
-'$scope',
-'auth',
-function($scope, auth){
-  $scope.isLoggedIn = auth.isLoggedIn;
-  $scope.currentUser = auth.currentUser;
-  $scope.logOut = auth.logOut;
-}]);
+$scope.packageClicked = function(index){
+	$scope.selector=angular.element(document.querySelector("#modal-window"));
 
-app.controller('PostsCtrl', [
- '$scope','posts','post','auth',
- function($scope,posts,post,auth){
-	$scope.post = post;
-	$scope.isLoggedIn = auth.isLoggedIn;
-	$scope.addComment = function(){
-	  if($scope.body === '') { return; }
-	  posts.addComment(post._id, {
-	    body: $scope.body,
-	    author: 'user',
-	  }).success(function(comment) {
-	    $scope.post.comments.push(comment);
-	  });
-	  $scope.body = '';
-	};
+	$scope.title=$scope.tours[index].tour_name;
+	$scope.cost=$scope.tours[index].tour_price;
 
-	$scope.incrementUpvotes = function(comment){
-	  posts.upvoteComment(post, comment);
-	};
+$scope.show($scope);
+	//modal window
+	//dynamix modal window
 
- }]);
+	$scope.building_modal='<div id="myModal" class="modal fade" role="dialog">';
+	$scope.building_modal+='<div class="modal-dialog">';
 
-app.controller('MainCtrl', [
-'$scope','$http','posts','auth',
-function($scope,$http,posts,auth){
-  $scope.isLoggedIn = auth.isLoggedIn;
-  $scope.posts = posts.posts;
-  $scope.addPost = function(){
-     if(!$scope.title || $scope.title == '') { return; }
-     posts.create({title : $scope.title , link: $scope.link, upvotes : 0});
-     $scope.title='';
-     $scope.link='';
-  };
-  $scope.incrementUpvotes = function(post){
-   post.upvotes+=1;
-  };
-}]);
 
-app.controller('CafeTabController', [
-'$scope','$timeout',
-function($scope,$timeout){
-	$scope.tabs = [{
-						tab: 1,
-            title: 'Cafe Menu',
-            url: 'template/cafemenu.html'
-        }, {
-						tab: 2,
-            title: 'Store Locator',
-            url: 'template/storeLocator.html'
-        }, {
-						tab: 3,
-            title: 'Schemes',
-            url: 'template/schemes.html'
-    		}, {
-						tab: 4,
-            title: 'About us',
-            url: 'template/aboutUs.html'
-  }];
-	$scope.hovering = false;
-	$scope.showIt = function () {
-      timer = $timeout(function () {
-          $scope.hovering = true;
-      }, 100);
-  };
 
-  // mouseleave event
-  $scope.hideIt = function () {
-      $timeout.cancel(timer);
-      $scope.hovering = false;
-  };
-	$scope.currentTab = 'template/cafemenu.html';
+			$scope.building_modal+='<div class="modal-content">';
+				$scope.building_modal+='<div class="modal-header">';
+					$scope.building_modal+='<button type="button" class="close" data-dismiss="modal">&times;</button>';
+					$scope.building_modal+='<h4 class="modal-title">'+$scope.title+'</h4>';
+				$scope.building_modal+='</div>';
+				$scope.building_modal+='<div class="modal-body">';
 
-$scope.setTab = function(newTab){
-	$scope.currentTab = newTab.url;
+			$scope.building_modal+='<div class="">';
+					$scope.building_modal+='<ul class="nav nav-tabs">';
+					$scope.building_modal+='<li class="active"><a href="#tab1" data-toggle="tab">Description</a></li>';
+					$scope.building_modal+='<li><a href="#tab2" data-toggle="tab">Book</a></li>';
+					$scope.building_modal+='</ul>';
+					$scope.building_modal+='<div class="tab-content">';
+					$scope.building_modal+='<div class="tab-pane active" id="tab1">';
+							$scope.building_modal+='Detailed Description About Package';
+					$scope.building_modal+='</div>';
+					$scope.building_modal+='<div class="tab-pane form-group" style="padding-top:2%" id="tab2">';
+				$scope.building_modal+='<div class="full-container">';
+
+			$scope.building_modal+='<div class="row">';
+					$scope.building_modal+='<div class="col-sm-3"><label style="color:#737125,padding-top:2%">Name : </label></div>';
+					$scope.building_modal+='<div class="col-sm-9"><input type="text" value="" required/></div>';
+
+				$scope.building_modal+='</div>';
+
+				$scope.building_modal+='<div class="row">';
+				$scope.building_modal+='<div class="col-sm-3"><label style="color:#737125,padding-top:2%">Phone No : </label></div>';
+				$scope.building_modal+='<div class="col-sm-9"><input type="text" value="" required/></div>';
+				$scope.building_modal+='</div>';
+
+				$scope.building_modal+='<div class="row">';
+				$scope.building_modal+='<div class="col-sm-3"><label style="color:#737125,padding-top:2%">Email Id : </label></div>';
+				$scope.building_modal+='<div class="col-sm-9"><input type="text" value="" /></div>';
+
+				$scope.building_modal+='</div>';
+
+
+					$scope.building_modal+='</div>        </div>        </div>      </div>';
+				$scope.building_modal+='<div class="modal-footer">';
+					$scope.building_modal+='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>';
+			$scope.building_modal+='<button type="button" class="btn btn-default" onclick=sendToServer()>Submit</button>';
+				$scope.building_modal+='</div>';
+			$scope.building_modal+='</div>  </div></div></div>';
+
 };
 
-$scope.isSet = function(taburl){
-	return $scope.currentTab == taburl;
-};
 }]);
+
+app.controller('ModalController', function($scope, close,scope){
+  $scope.scope=scope;
+
+ $scope.close = function(result) {
+	console.log("From the close");
+	 $('.modal-backdrop').remove();
+ 	close(result); // close, but give 500ms for bootstrap to animate
+ };
+
+});
