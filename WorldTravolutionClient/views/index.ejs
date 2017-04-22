@@ -4,6 +4,8 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="/stylesheets/style.css">
+<link rel="stylesheet" href="/stylesheets/header-style.css">
+<link rel="stylesheet" href="/stylesheets/footer-style.css">
 <!-- jQuery library -->
 <script   src="https://code.jquery.com/jquery-2.2.4.js"   integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="   crossorigin="anonymous"></script>
 
@@ -22,8 +24,13 @@
 <body ng-app="worldTravolution">
    <div class="row">
 	<div class="col-md-12">
-    <div class="rowTop"></div>
+    <div class="rowTop">
+      <div ng-include="'template/header.html'"></div>
+    </div>
 		<div ui-view></div>
+    <div class="rowBottom">
+      <div ng-include="'template/footer.html'"></div>
+    </div>
 	</div>
  </div>
 </body>

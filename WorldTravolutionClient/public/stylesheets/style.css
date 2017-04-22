@@ -24,3 +24,42 @@ input {
 input[type="text"] {
     margin: 0 0 10px 0;
 }
+
+div .wt-bg-filter{
+  border: 1px solid #c8cae7;
+    background-color: #cbcde5;
+    color: #4d50a9;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: 60px;
+    text-align: center;
+}
+div .wt-bg-light-filter{
+  border: 1px solid #c8cae7;
+    background-color:#cbcde4;
+    color: #4d50a9;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: 60px;
+    text-align: center;
+    padding-left: 10px;
+}
+
+.main-container{
+  background-image:url("../images/download.png");
+  background-repeat: repeat;
+  width:100%;
+}
+.container-table {
+    display: table;
+    height: 100%;
+}
+.vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+}
+.dropDownBox{
+    padding-top: 13px;
+}

@@ -1,16 +1,66 @@
 
-<div class="container" ng-controller="TourCtrl" ng-init="init()">
-  <div class="row col-md-4 " id="tabs" ng-repeat="tour in tours">
-  	<div class="col-md-12">
-      <span class="card" role="button" onclick="event.preventDefault()" data-target="#myModal" ng-click="packageClicked($index)">
-        <div ng-repeat="media in tour.tour_media">
-    		  <a href="#"><img src="{{media.tour_media_path}}"  style="width:100%"/></a>
+<div class="row" ng-controller="TourCtrl" ng-init="init()">
+  <div class="row" >
+    <div class="col-md-2 wt-bg-filter" style="padding-left:10px;background-color:#92add0;">
+      <strong class="travellersFilterTitle fleft">SHOW PRICES FOR</strong>
+    </div>
+
+    <div class="col-md-4  wt-bg-light-filter" id="packageCityInfoFilter">
+        <div class="col-md-5">
+          <span>Starting From</span>
         </div>
-      </span><br/>
-      <h4><b>{{tour.tour_name}}</b></h4>
-      <span><b>Duration :</b>{{tour.tour_duration}} days</span><br/>
-      <span><b>Price : From </b>{{tour.tour_price}}</span><br/>
-      <p>Coverage : FORT AGUADA + BEACHES + BOAT CRUISE + MANGESHI TEMPLE + PANJIM SHOPPING </p>
-  	</div>
-  </div>
+        <div class="col-md-7 dropDownBox">
+          <select class="form-control btn-default">
+            <option value="Delhi">Delhi</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Kolkata">Kolkata</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Chennai">Chennai</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Bangalore">Bangalore</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-4  wt-bg-light-filter" id="packageCityInfoFilter">
+          <div class="col-md-5 relative">
+            <span>Starting From</span>
+          </div>
+          <div class="col-md-7 dropDownBox">
+            <select class="form-control btn-default">
+              <option value="Delhi">Delhi</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Kolkata">Kolkata</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Chennai">Chennai</option>
+              <option value="Ahmedabad">Ahmedabad</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Bangalore">Bangalore</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-2 wt-bg-filter" style="padding-left:10px">
+          <strong class="travellersFilterTitle fleft">SHOW PRICES FOR</strong>
+        </div>
+    </div>
+    <div class="main-container">
+      <div class="container-fluid">
+        <div class="row col-md-offset-1">
+          <div class="row col-md-3 col-md " id="tabs" ng-repeat="tour in tours">
+          	<div class="col-md-12">
+              <span class="card" role="button" onclick="event.preventDefault()" data-target="#myModal" ng-click="packageClicked($index)">
+                <div ng-repeat="media in tour.tour_media">
+            		  <a href="#"><img src="{{media.tour_media_path}}"  style="width:100%"/></a>
+                </div>
+              </span><br/>
+              <h4><b>{{tour.tour_name}}</b></h4>
+              <span><b>Duration :</b>{{tour.tour_duration}} days</span><br/>
+              <span><b>Price : From </b>{{tour.tour_price}}</span><br/>
+              <p>Coverage : FORT AGUADA + BEACHES + BOAT CRUISE + MANGESHI TEMPLE + PANJIM SHOPPING </p>
+          	</div>
+          </div>
+      </div>
+      </div>
+    </div>
 </div>

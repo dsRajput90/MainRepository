@@ -27,7 +27,6 @@ function($scope,$http,tourFactory,ModalService){
           return $http.get(tourFactory.baseUri + '/api/tour/all').
 	    then(function(response) {
 					angular.copy(response.data.data, $scope.tours);
-					console.log($scope.tours);
 	  });
 	};
 
